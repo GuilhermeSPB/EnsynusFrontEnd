@@ -1,0 +1,55 @@
+.container{
+    position: fixed;
+  top: 20px;
+  right: 20px;
+
+  min-width: 260px;
+  max-width: 360px;
+  padding: 16px 20px;
+
+  background-color: #304458; /* escuro elegante */
+  color: #ffffff;
+
+  border: 1px solid #f7c948; /* destaque */
+  border-left: 6px solid #f7c948;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+
+  opacity: 0;
+  transform: translateY(-10px);
+
+  animation: fadeInOut 4s ease-in-out forwards;
+  z-index: 9999;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.text{
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+}

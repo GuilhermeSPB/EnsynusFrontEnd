@@ -8,8 +8,18 @@ import styles from "./Register.module.css"
 import { FaEnvelope } from "react-icons/fa"
 import { TbLockPassword } from "react-icons/tb"
 import Radio from "../../components/radio/Radio"
+import AlertValidate from "../../components/AlertValidate/AlertValidate"
 
 export default function Register(){
+
+type RegisterStep = "BASIC" | "RESPONSAVEL"
+
+const [step, setStep] = useState<RegisterStep>("BASIC")
+
+
+
+
+    const [showAlert, setShowAlert] = useState(false)
 
     const [form, setForm] = useState<RegisterRequest>({
 
@@ -17,30 +27,104 @@ export default function Register(){
         email: "",
         senha: "",
         dataNasc: "",
-        role: -1,
+        role: 
+        -1,
 
         //Dados não obrigatórios
         nomeResp: null,
         emailResp: null
     })
 
+    async function testarEntrada(e:React.FormEvent){
+        e.preventDefault()
+        console.log(form)
+    }
+
+    function handleNext(e: React.FormEvent){
+        e.preventDefault
+
+        if(form.role === 0){
+            setStep("RESPONSAVEL")
+            return
+        }
+
+        handleSubmit(e);
+    }
+
+    function maioridadeChecker(dataNasc : string): boolean{
+        
+        if(!dataNasc) return false
+        
+        const hoje = new Date()
+        const nascimento = new Date(dataNasc)
+
+        let idade = hoje.getFullYear() - nascimento.getFullYear()
+
+        const mesAtual = hoje.getMonth()
+        const mesNasc = nascimento.getMonth()
+        
+        if(
+            mesAtual < mesNasc || (mesAtual === mesNasc && hoje.getDate() < nascimento.getDate())
+        ) {
+            idade --
+        }
+        return idade >= 18
+    }
+
+function showAlertTemporarily() {
+   setShowAlert(true)
+
+  setTimeout(() => {
+    setShowAlert(false)
+  }, 4500)
+}
+
+    function validate(): boolean{
+        var isValid = true;
+
+        if(!form.nome.trim()) isValid = false;
+        if(!form.email.trim()) isValid = false;
+        if(!form.senha.trim()) isValid = false;
+        if(!form.dataNasc.trim()) isValid = false;
+        if( form.role === -1 ) isValid = false;  
+
+        if(!isValid){
+            showAlertTemporarily()
+        }
+
+        return isValid;
+    }
+
     async function handleSubmit(e:React.FormEvent) {
         e.preventDefault()
-        
-        try{
-            const response = await register(form)
-            console.log(response.token)    
-        } catch(error){
-            console.error("Erro ao registrar", error)
+        testarEntrada(e)
+        if(validate()){
+            try{
+                const response = await register(form)
+                console.log(response.token)    
+            } catch(error){
+                console.error("Erro ao registrar", error)
+            }
         }
     }
 
+    
     return (
         
     <div className={styles.container}>
-        <form className={styles.form} onSubmit={handleSubmit}>
 
-    <div style={{ flexFlow: "row"}}>
+    {showAlert && (
+      <AlertValidate
+        text="Campos obrigatórios não preenchidos"
+        icon={TbLockPassword}
+      />
+      
+    )}
+
+        <form className={styles.form} onSubmit={handleNext}>
+    {step === "BASIC" && (
+    <>
+    <div style={{ display: "flex" , flexFlow: "row"}}>
         <Radio
             name="role"
             value={0}
@@ -112,7 +196,36 @@ export default function Register(){
 
             <br/>
 
-            <Button text="Registar"/>
+            <Button text="Registrar" type="button" onClick={handleNext} />
+        </>
+        )}
+        {step === "RESPONSAVEL" &&(
+            <>
+            <InputText
+                type="text"
+                icon={FaPerson}
+                value={form.nomeResp ??  ""}
+                placeholder="Digite o nome de seu responsável"
+                onChange={value =>
+                    setForm({ ...form, nomeResp: value})   
+                }
+                />
+
+            <br/>
+
+            <InputText
+                type="email"
+                icon={FaEnvelope}
+                value={form.emailResp ?? ""}
+                placeholder="Digite o email de seu responsável"
+                onChange={value =>
+                    setForm({ ...form, emailResp: value})   
+                }
+                />
+            <br/>
+             <Button text="Registrar" type="submit" onClick={handleSubmit} />
+            </>
+        )}
         </form>
 
     </div>
