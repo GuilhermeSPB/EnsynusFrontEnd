@@ -56,7 +56,7 @@ async function handleSubmit(e: React.FormEvent){
         />
 
         <br/>
-          <Button text="Entrar"/>
+          <Button text="Entrar" type="submit"/>
         </form>
         </div>
     )

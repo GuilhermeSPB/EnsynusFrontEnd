@@ -9,17 +9,19 @@ import { FaEnvelope } from "react-icons/fa"
 import { TbLockPassword } from "react-icons/tb"
 import Radio from "../../components/radio/Radio"
 import AlertValidate from "../../components/AlertValidate/AlertValidate"
+import Return from "../../components/return/Return"
 
 export default function Register(){
 
 type RegisterStep = "BASIC" | "RESPONSAVEL"
 
+
 const [step, setStep] = useState<RegisterStep>("BASIC")
 
 
 
-
     const [showAlert, setShowAlert] = useState(false)
+    const [textAlert, setTextAlert] = useState("");
 
     const [form, setForm] = useState<RegisterRequest>({
 
@@ -35,19 +37,13 @@ const [step, setStep] = useState<RegisterStep>("BASIC")
         emailResp: null
     })
 
-    async function testarEntrada(e:React.FormEvent){
-        e.preventDefault()
-        console.log(form)
-    }
-
     function handleNext(e: React.FormEvent){
         e.preventDefault
 
-        if(form.role === 0){
+        if(!maioridadeChecker(form.dataNasc) && form.role == 0){
             setStep("RESPONSAVEL")
             return
         }
-
         handleSubmit(e);
     }
 
@@ -71,7 +67,8 @@ const [step, setStep] = useState<RegisterStep>("BASIC")
         return idade >= 18
     }
 
-function showAlertTemporarily() {
+function showAlertTemporarily(text : string) {
+   setTextAlert(text)
    setShowAlert(true)
 
   setTimeout(() => {
@@ -79,17 +76,31 @@ function showAlertTemporarily() {
   }, 4500)
 }
 
+function handleRerturn(){
+    setStep("BASIC");
+}
+
+
     function validate(): boolean{
+
         var isValid = true;
 
         if(!form.nome.trim()) isValid = false;
         if(!form.email.trim()) isValid = false;
         if(!form.senha.trim()) isValid = false;
         if(!form.dataNasc.trim()) isValid = false;
-        if( form.role === -1 ) isValid = false;  
+        if(form.role === -1 ) isValid = false;
+        if(form.role === 0 && maioridadeChecker(form.dataNasc) == false && !form.nomeResp?.trim()) isValid = false;  
+        if(form.role === 0 && maioridadeChecker(form.dataNasc) == false && !form.emailResp?.trim()) isValid = false;
+
+        if(form.role === 1 && maioridadeChecker(form.dataNasc) == false){
+            isValid = false
+            showAlertTemporarily("Não é possível cadastrar um professor menor de idade.")
+            return false;
+        }
 
         if(!isValid){
-            showAlertTemporarily()
+            showAlertTemporarily("Campos obrigatórios não preenchidos.")
         }
 
         return isValid;
@@ -97,11 +108,9 @@ function showAlertTemporarily() {
 
     async function handleSubmit(e:React.FormEvent) {
         e.preventDefault()
-        testarEntrada(e)
         if(validate()){
             try{
-                const response = await register(form)
-                console.log(response.token)    
+                 await register(form)
             } catch(error){
                 console.error("Erro ao registrar", error)
             }
@@ -115,13 +124,15 @@ function showAlertTemporarily() {
 
     {showAlert && (
       <AlertValidate
-        text="Campos obrigatórios não preenchidos"
+        text={textAlert}
         icon={TbLockPassword}
       />
       
     )}
 
         <form className={styles.form} onSubmit={handleNext}>
+
+    
     {step === "BASIC" && (
     <>
     <div style={{ display: "flex" , flexFlow: "row"}}>
@@ -201,11 +212,17 @@ function showAlertTemporarily() {
         )}
         {step === "RESPONSAVEL" &&(
             <>
+            
+            <Return onClick={handleRerturn}/>
+
+            <br/>
+        
+
             <InputText
                 type="text"
                 icon={FaPerson}
                 value={form.nomeResp ??  ""}
-                placeholder="Digite o nome de seu responsável"
+                placeholder="Nome do responsável"
                 onChange={value =>
                     setForm({ ...form, nomeResp: value})   
                 }
@@ -217,7 +234,7 @@ function showAlertTemporarily() {
                 type="email"
                 icon={FaEnvelope}
                 value={form.emailResp ?? ""}
-                placeholder="Digite o email de seu responsável"
+                placeholder="Email do responsável"
                 onChange={value =>
                     setForm({ ...form, emailResp: value})   
                 }
