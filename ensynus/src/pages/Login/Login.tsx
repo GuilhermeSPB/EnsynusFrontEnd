@@ -18,8 +18,7 @@ async function handleSubmit(e: React.FormEvent){
     e.preventDefault()
 
     try{
-        const response = await login(form)
-        console.log(response.token)
+        await login(form)
     } catch(error){
         console.error("Erro ao logar", error)
     }
