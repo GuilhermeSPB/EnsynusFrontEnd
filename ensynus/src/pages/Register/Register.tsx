@@ -120,7 +120,7 @@ function handleRerturn(){
     
     return (
         
-    <div className={styles.container}>
+    <div className="min-h-screen w-screen flex items-center justify-center bg-[#2b4c7e] rounded-[2px] box-border">
 
     {showAlert && (
       <AlertValidate
@@ -130,12 +130,13 @@ function handleRerturn(){
       
     )}
 
-        <form className={styles.form} onSubmit={handleNext}>
+        <form className="w-full max-w-[300px] bg-[#ffffff] border-[5px] border-solid border-[#f7c948] rounded-[10px]
+                         p-6 flex flex-col  gap-4 items-center animate-fade-in-up" onSubmit={handleNext}>
 
     
     {step === "BASIC" && (
     <>
-    <div style={{ display: "flex" , flexFlow: "row"}}>
+    <div className="flex flex-row">
         <Radio
             name="role"
             value={0}
