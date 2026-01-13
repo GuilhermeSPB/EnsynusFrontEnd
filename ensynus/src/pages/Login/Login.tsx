@@ -8,6 +8,8 @@ import { FaEnvelope } from "react-icons/fa"
 import { TbLockPassword } from "react-icons/tb"
 import { useNavigate } from "react-router-dom"
 import Link from "../../components/link/link"
+import '../../styles/global.css'
+
 
 export default function Login(){
 const navigate = useNavigate();
@@ -22,7 +24,7 @@ async function handleSubmit(e: React.FormEvent){
 
     try{
         const response = await login(form)
-        response.role === 0 ? navigate("/aluno/menu") : navigate("professor/menu")
+        response.role === 0 ? navigate("/aluno/menu") : navigate("/professor/menu")
 
     } catch(error){
         console.error("Erro ao logar", error)
@@ -34,8 +36,7 @@ async function handleSubmit(e: React.FormEvent){
 
 
 
-        <form className="w-full max-w-[300px] bg-[#ffffff] border-[5px] border-solid border-[#f7c948] rounded-[10px] flex
-                         flex-col gap-4 p-6 items-center animate-fade-in-up  " onSubmit={handleSubmit}>
+        <form className="container" onSubmit={handleSubmit}>
 
         
 
@@ -59,13 +60,12 @@ async function handleSubmit(e: React.FormEvent){
         }
         />
 
-        {/* <span className="  border-b-2 border-solid border-[#f7c948] ">teste</span> */}
 
         <div className="p-3">
           <Button text="Entrar" type="submit"/>
         </div>
         <div className="flex flex-row p-2 gap-16 text-center">
-            <Link texto="Redefinir Senha" path="/register"/>
+            <Link texto="Redefinir Senha" path="/redefinir"/>
 
             <Link texto="Registrar" path="/register"/>
         </div>

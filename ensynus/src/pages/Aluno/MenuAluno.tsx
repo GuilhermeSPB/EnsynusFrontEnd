@@ -8,9 +8,9 @@ export default function MenuAluno(){
         <div>
             <AlunoLayout/>
 
-            <div>
-                <span>Bem vindo {JSON.parse(localStorage.getItem("user") || '""')}</span>
-            </div>
+            {/* <div>
+                <span>Bem vindo aluno {JSON.parse(localStorage.getItem("user") || '""')}</span>
+            </div> */}
         </div>
 
 

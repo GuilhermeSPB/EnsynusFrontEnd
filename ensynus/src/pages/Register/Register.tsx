@@ -10,6 +10,7 @@ import { TbLockPassword } from "react-icons/tb"
 import Radio from "../../components/radio/Radio"
 import AlertValidate from "../../components/AlertValidate/AlertValidate"
 import Return from "../../components/return/Return"
+import '../../styles/global.css'
 
 export default function Register(){
 
@@ -130,8 +131,7 @@ function handleRerturn(){
       
     )}
 
-        <form className="w-full max-w-[300px] bg-[#ffffff] border-[5px] border-solid border-[#f7c948] rounded-[10px]
-                         p-6 flex flex-col  gap-4 items-center animate-fade-in-up" onSubmit={handleNext}>
+        <form className="container" onSubmit={handleNext}>
 
     
     {step === "BASIC" && (
