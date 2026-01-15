@@ -1,13 +1,15 @@
 import { useState } from "react"
 import { login } from "../../api/auth"
-import type { LoginRequest } from "../../types/auth"
-import styles from "./Login.module.css"
+import type { LoginRequest } from "../../types/Auth"
+import Radio from "../../components/radio/Radio"
+import AlertValidate from "../../components/AlertValidate/AlertValidate"
 import Button from "../../components/button/button"
 import InputText from "../../components/inputText/inputText"
 import { FaEnvelope } from "react-icons/fa"
 import { TbLockPassword } from "react-icons/tb"
 import { useNavigate } from "react-router-dom"
 import Link from "../../components/link/link"
+import logo from "../../img/logo.jpg"
 import '../../styles/global.css'
 
 
@@ -16,28 +18,73 @@ const navigate = useNavigate();
 
 const [form, setForm] = useState<LoginRequest>({
     email: "",
-    senha: ""
+    senha: "",
+    role: -1,
 })
+
+const [showAlert, setShowAlert] = useState(false)
+const [textAlert, setTextAlert] = useState("");
+
+
+function showAlertTemporarily(text : string) {
+   setTextAlert(text)
+   setShowAlert(true)
+
+  setTimeout(() => {
+    setShowAlert(false)
+  }, 4500)
+}
+
+function validate(): boolean{
+
+        var isValid = true;
+
+        if(!form.email.trim()) isValid = false;
+        if(!form.senha.trim()) isValid = false;
+
+
+        if(!isValid){
+            showAlertTemporarily("Campos obrigatórios não preenchidos.")
+        }
+
+        return isValid;
+    }
+
+
 
 async function handleSubmit(e: React.FormEvent){
     e.preventDefault()
+    if(validate()){
+        try{
+            const response = await login(form)
+            response.role === 0 ? navigate("/aluno/menu") : navigate("/professor/menu")
 
-    try{
-        const response = await login(form)
-        response.role === 0 ? navigate("/aluno/menu") : navigate("/professor/menu")
-
-    } catch(error){
-        console.error("Erro ao logar", error)
+        } catch(error){
+            console.error("Erro ao logar", error)
+        }
     }
 }
     return (
+
+        
+
+
         <div className="flex items-center justify-center box-border
                         min-h-screen w-screen bg-[#2b4c7e]">
 
+        
 
+        {showAlert && (
+            <AlertValidate
+                text={textAlert}
+                icon={TbLockPassword}
+            />
+            
+            )}
 
         <form className="container" onSubmit={handleSubmit}>
 
+        <img src={logo} alt="Logo" className="rounded-lg size-1/3 mb-5"/>
         
 
         <InputText
@@ -59,6 +106,30 @@ async function handleSubmit(e: React.FormEvent){
             setForm({ ...form, senha: value})   
         }
         />
+
+<div className="flex flex-row mt-2">
+        <Radio
+            name="role"
+            value={0}
+            label="Aluno"
+            checked = {form.role === 0}
+            onChange={value =>
+                    setForm({ ...form, role: value})   
+                }
+        />
+
+        <Radio
+            name="role"
+            value={1}
+            label="Professor"
+            checked = {form.role === 1}
+            onChange={value =>
+                    setForm({ ...form, role: value})   
+                }
+        />
+
+    </div>
+
 
 
         <div className="p-3">

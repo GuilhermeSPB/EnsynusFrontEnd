@@ -1,6 +1,6 @@
 import  api  from "./api";
 
-import type { LoginRequest, AuthResponse, RegisterRequest } from "../types/auth";
+import type { LoginRequest, AuthResponse, RegisterRequest } from "../types/Auth";
 
 
 
