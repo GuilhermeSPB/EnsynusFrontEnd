@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { register } from "../../api/auth"
 import type { RegisterRequest } from "../../types/Auth"
 import InputText from "../../components/inputText/inputText"
 import Button from "../../components/button/button"

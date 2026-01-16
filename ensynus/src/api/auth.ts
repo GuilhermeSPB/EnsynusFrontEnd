@@ -1,5 +1,4 @@
 import  api  from "./api";
-import { useNavigate } from "react-router-dom"
 
 import type { LoginRequest, AuthResponse, RegisterRequest } from "../types/Auth";
 

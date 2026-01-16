@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { useNavigate, } from "react-router-dom";
 import {login as loginRequest, register as registerRequest } from "../api/auth"
 import type { AuthResponse, LoginRequest, RegisterRequest} from "../types/Auth";
+import { isTokenValid } from "../utils/auth";
 
 type User = {
   nome: string;
@@ -13,7 +14,7 @@ type AuthContextType = {
   user: User | null;
   login: (data: any) => Promise<void>;
   register: (data : any) => Promise<void>;
-//   logout: () => void;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -27,6 +28,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   try {
     const parsed = JSON.parse(stored);
+
+    if(!parsed.token || !isTokenValid(parsed.token)){
+      localStorage.removeItem("user");
+      return null;
+    }
+
+
+
     return {
       nome: parsed.nome,
       email: parsed.email,
@@ -66,6 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       role: response.role
     };
 
+
     localStorage.setItem("user", JSON.stringify({
       ...userData,
       token: response.token,
@@ -74,9 +84,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     navigate(response.role === 0 ? "/aluno/menu" : "/professor/menu");
   }
 
+  async function logout() {
+      setUser(null);
+      localStorage.removeItem("user");
+      navigate("/login");
+    }
 
   return (
-    <AuthContext.Provider value={{ user, login, register }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

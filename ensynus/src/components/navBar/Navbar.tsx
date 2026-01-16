@@ -24,7 +24,7 @@ export default function Navbar({ items, path, onNavigate}: NavbarProps){
 const [open, setOpen] = useState(false);
 const [show, setShow] = useState(false);
 
-const {user} = useAuth();
+const {user, logout} = useAuth();
 
 const toggle = () => {
   if (!show) {
@@ -76,13 +76,14 @@ const toggle = () => {
     </button>
         {show && (
         
-          <ul className={`fixed right-0 mt-2 w-32 bg-[#2b4c7e] rounded-sm shadow-lg 
-                         ${open ? "animate-fade-in-right" : "animate-fade-out-right"}`}>
+          <button className={`fixed right-0 mt-2 w-32 bg-[#2b4c7e] rounded-sm shadow-lg 
+                         ${open ? "animate-fade-in-right" : "animate-fade-out-right"}`}
+                         onClick={() => logout()}>
 
           <li className="m-1 text-[#ffffff] flex items-center gap-2 rounded hover:bg-[#2d5a9c] cursor-pointer">
              <IoIosLogOut /> Logout
           </li>
-        </ul>
+        </button>
         )}
       </div>
     </nav>

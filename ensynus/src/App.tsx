@@ -2,11 +2,10 @@ import Login from "./pages/Login/Login"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Register from "./pages/Register/Register"
 import MenuAluno from "./pages/Aluno/MenuAluno"
-import AlunoLayout from "./layouts/AlunoLayout"
 import Redefinir from "./pages/Redefinir/Redefinir"
 import MenuProfessor from "./pages/Professor/MenuProfessor"
 import { AuthProvider } from "./contexts/AuthContext"
-
+import RequireAuth  from "./routes/RequireAuth"
 
 function App(){
     return (
@@ -18,13 +17,13 @@ function App(){
                     <Route path= "/redefinir" element={<Redefinir/>}/>
 
                     {/* Rotas Aluno */}
-                <Route path="/aluno">
-                    <Route path="menu" element={<MenuAluno/>}/>
+                <Route element={<RequireAuth role={0}/>}> 
+                    <Route path="/aluno/menu" element={<MenuAluno/>}/>
                 </Route>
 
                     {/* Rotas Professor */}
-                <Route path="/professor">
-                    <Route path="menu" element={<MenuProfessor/>}/>
+                <Route element={<RequireAuth role={1}/>}>
+                    <Route path="/professor/menu" element={<MenuProfessor/>}/>
                 </Route>
 
                 </Routes>

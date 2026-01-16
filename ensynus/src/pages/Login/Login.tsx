@@ -6,7 +6,6 @@ import Button from "../../components/button/button"
 import InputText from "../../components/inputText/inputText"
 import { FaEnvelope } from "react-icons/fa"
 import { TbLockPassword } from "react-icons/tb"
-import { useNavigate } from "react-router-dom"
 import Link from "../../components/link/link"
 import logo from "../../img/logo.jpg"
 import '../../styles/global.css'
@@ -14,7 +13,6 @@ import { useAuth } from "../../contexts/AuthContext"
 
 
 export default function Login(){
-const navigate = useNavigate();
 
 const [form, setForm] = useState<LoginRequest>({
     email: "",
