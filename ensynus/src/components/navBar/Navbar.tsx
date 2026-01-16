@@ -1,8 +1,8 @@
-import styles from "./Navbar.module.css"
 import logo from "../../img/logo.jpg"
 import { useState } from "react"
 import { FaCaretDown } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
+import { useAuth } from "../../contexts/AuthContext";
 
 
 export type NavbarItem = {
@@ -23,6 +23,8 @@ export default function Navbar({ items, path, onNavigate}: NavbarProps){
 
 const [open, setOpen] = useState(false);
 const [show, setShow] = useState(false);
+
+const {user} = useAuth();
 
 const toggle = () => {
   if (!show) {
@@ -66,11 +68,11 @@ const toggle = () => {
         className="text-white flex flex-col items-start"
       >
         <div className="flex items-center gap-1">
-          <span>{JSON.parse(localStorage.getItem("user") || '""')}</span>
+          <span>{user?.nome}</span>
           <FaCaretDown />
         </div>
 
-        <p className="text-[12px]">{JSON.parse(localStorage.getItem("role") || '""')}</p>
+        <p className="text-[12px]">{user?.role === 0 ? "Aluno" : "Professor"}</p>
     </button>
         {show && (
         
@@ -86,5 +88,3 @@ const toggle = () => {
     </nav>
   )
 }
-
-// bg-[#f7c948] text-[#2b4c7e]

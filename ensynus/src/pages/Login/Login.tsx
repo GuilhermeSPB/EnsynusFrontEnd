@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { login } from "../../api/auth"
 import type { LoginRequest } from "../../types/Auth"
 import Radio from "../../components/radio/Radio"
 import AlertValidate from "../../components/AlertValidate/AlertValidate"
@@ -11,6 +10,7 @@ import { useNavigate } from "react-router-dom"
 import Link from "../../components/link/link"
 import logo from "../../img/logo.jpg"
 import '../../styles/global.css'
+import { useAuth } from "../../contexts/AuthContext"
 
 
 export default function Login(){
@@ -51,13 +51,13 @@ function validate(): boolean{
     }
 
 
+const { login } = useAuth();
 
 async function handleSubmit(e: React.FormEvent){
     e.preventDefault()
     if(validate()){
         try{
-            const response = await login(form)
-            response.role === 0 ? navigate("/aluno/menu") : navigate("/professor/menu")
+            await login(form)
 
         } catch(error){
             console.error("Erro ao logar", error)

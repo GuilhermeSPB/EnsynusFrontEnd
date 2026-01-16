@@ -10,6 +10,7 @@ import Radio from "../../components/radio/Radio"
 import AlertValidate from "../../components/AlertValidate/AlertValidate"
 import Return from "../../components/return/Return"
 import '../../styles/global.css'
+import { useAuth } from "../../contexts/AuthContext"
 
 export default function Register(){
 
@@ -105,6 +106,8 @@ function handleRerturn(){
 
         return isValid;
     }
+
+    const { register } = useAuth();
 
     async function handleSubmit(e:React.FormEvent) {
         e.preventDefault()

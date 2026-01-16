@@ -9,7 +9,7 @@ export default function MenuProfessor(){
             <ProfessorLayout/>
 
             <div>
-                <span>Bem vindo professor {JSON.parse(localStorage.getItem("user") || '""')}</span>
+                
             </div>
         </div>
 

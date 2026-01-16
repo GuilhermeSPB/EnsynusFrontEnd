@@ -1,5 +1,3 @@
-import styles from "./Radio.module.css";
-
 type RadioProps = {
   name: string;
   value: number;

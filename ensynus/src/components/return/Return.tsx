@@ -1,4 +1,3 @@
-import styles from "./Return.module.css"
 import { IoReturnUpBack } from "react-icons/io5";
 
 type ReturnProps = {

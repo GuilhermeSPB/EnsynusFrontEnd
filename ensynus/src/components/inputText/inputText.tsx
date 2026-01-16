@@ -1,4 +1,3 @@
-import styles from "./inputText.module.css"
 import type { IconType } from "react-icons"
 
 type InputTextProps = {

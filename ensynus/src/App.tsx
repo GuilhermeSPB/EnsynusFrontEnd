@@ -5,27 +5,30 @@ import MenuAluno from "./pages/Aluno/MenuAluno"
 import AlunoLayout from "./layouts/AlunoLayout"
 import Redefinir from "./pages/Redefinir/Redefinir"
 import MenuProfessor from "./pages/Professor/MenuProfessor"
+import { AuthProvider } from "./contexts/AuthContext"
 
 
 function App(){
     return (
         <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={<Login />}/>
-                <Route path="/register" element={<Register/>}/>
-                <Route path= "/redefinir" element={<Redefinir/>}/>
+            <AuthProvider>
+                <Routes>
+                    <Route path="/login" element={<Login />}/>
+                    <Route path="/register" element={<Register/>}/>
+                    <Route path= "/redefinir" element={<Redefinir/>}/>
 
-                {/* Rotas Aluno */}
-            <Route path="/aluno">
-                <Route path="menu" element={<MenuAluno/>}/>
-            </Route>
+                    {/* Rotas Aluno */}
+                <Route path="/aluno">
+                    <Route path="menu" element={<MenuAluno/>}/>
+                </Route>
 
-                {/* Rotas Professor */}
-            <Route path="/professor">
-                <Route path="menu" element={<MenuProfessor/>}/>
-            </Route>
+                    {/* Rotas Professor */}
+                <Route path="/professor">
+                    <Route path="menu" element={<MenuProfessor/>}/>
+                </Route>
 
-            </Routes>
+                </Routes>
+            </AuthProvider>
         </BrowserRouter>
     )
 } 
