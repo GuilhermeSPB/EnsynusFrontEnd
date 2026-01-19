@@ -1,4 +1,6 @@
 import type { IconType } from "react-icons"
+import {useState} from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 type InputTextProps = {
     label? : string
@@ -17,9 +19,13 @@ export default function InputText({
     placeholder,
     onChange} : InputTextProps) {
 
+      const[showPassword, setShowPassword] = useState(false);
+
+      const isPassword = type === "password";
+
         return (
 
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 w-full">
       {label && <label className="font-sans">{label}</label>}
 
       <div className="flex items-center gap-2 py-[6px] px-1 border-b-2 border-[#f7c948]">
@@ -27,11 +33,21 @@ export default function InputText({
 
         <input
         className={"flex-1 border-none outline-none bg-transparent text-base text-[#000000]"}
-          type={type}
+          type={isPassword && showPassword ? "text" : type}
           value={value}
           placeholder={placeholder}
           onChange={e => onChange(e.target.value)}
         />
+
+          {isPassword && (
+            <button
+              type="button"
+              onClick={() => setShowPassword(prev => !prev)}
+              className="text-[#555] hover:text-black">
+                {showPassword ? <FaEyeSlash/> : <FaEye/>}
+            </button>
+          )}
+
       </div>
     </div>
         

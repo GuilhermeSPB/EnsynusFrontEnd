@@ -11,6 +11,10 @@ module.exports = {
           '0%': { opacity: '0', transform: 'translateY(20px) scale(0.95)' },
           '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
         },
+        fadeOutDown: {
+          '0%': { opacity: '1', transform: 'translateY(0px) scale(0.95)' },
+          '100%': { opacity: '0', transform: 'translateY(0px) scale(1)' },
+        },
         fadeInRight: {
           "0%": { opacity: "1", transform: "translateX(100%)" },
           "100%": { opacity: "1", transform: "translateX(0)" },
@@ -22,6 +26,7 @@ module.exports = {
       },
       animation: {
         'fade-in-up': 'fadeInUp 1s ease-out forwards',
+        'fade-out-down': 'fadeOutDown 1s ease-out forwards',
         "fade-in-right": "fadeInRight .4s ease-out forwards",
         "fade-out-right": "fadeOutRight .4s ease-out forwards"
       },

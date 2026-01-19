@@ -14,6 +14,8 @@ import { useAuth } from "../../contexts/AuthContext"
 
 export default function Login(){
 
+const { login } = useAuth();
+
 const [form, setForm] = useState<LoginRequest>({
     email: "",
     senha: "",
@@ -24,13 +26,12 @@ const [showAlert, setShowAlert] = useState(false)
 const [textAlert, setTextAlert] = useState("");
 
 
-function showAlertTemporarily(text : string) {
-   setTextAlert(text)
-   setShowAlert(true)
-
+function showAlertTemporarily(text: string) {
+  setShowAlert(false);
   setTimeout(() => {
-    setShowAlert(false)
-  }, 4500)
+    setTextAlert(text);
+    setShowAlert(true);
+  }, 10);
 }
 
 function validate(): boolean{
@@ -49,23 +50,19 @@ function validate(): boolean{
     }
 
 
-const { login } = useAuth();
+
 
 async function handleSubmit(e: React.FormEvent){
     e.preventDefault()
     if(validate()){
         try{
             await login(form)
-
-        } catch(error){
-            console.error("Erro ao logar", error)
+        } catch(err : any){
+            showAlertTemporarily("E-mail ou senha incorretos.")
         }
     }
 }
     return (
-
-        
-
 
         <div className="flex items-center justify-center box-border
                         min-h-screen w-screen bg-[#2b4c7e]">
@@ -76,6 +73,7 @@ async function handleSubmit(e: React.FormEvent){
             <AlertValidate
                 text={textAlert}
                 icon={TbLockPassword}
+                time={3000}
             />
             
             )}

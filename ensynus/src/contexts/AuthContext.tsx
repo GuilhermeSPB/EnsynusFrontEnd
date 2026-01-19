@@ -3,6 +3,7 @@ import { useNavigate, } from "react-router-dom";
 import {login as loginRequest, register as registerRequest } from "../api/auth"
 import type { AuthResponse, LoginRequest, RegisterRequest} from "../types/Auth";
 import { isTokenValid } from "../utils/auth";
+import AlertValidate from "../components/AlertValidate/AlertValidate";
 
 type User = {
   nome: string;
@@ -15,12 +16,15 @@ type AuthContextType = {
   login: (data: any) => Promise<void>;
   register: (data : any) => Promise<void>;
   logout: () => void;
+  error: string | null;
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   const [user, setUser] = useState<User | null>(() => {
   const stored = localStorage.getItem("user");
@@ -48,6 +52,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 
   async function login(data: LoginRequest) {
+
+  try{
+    setError(null);
+
     const response: AuthResponse = await loginRequest(data);
 
     const userData: User = {
@@ -64,6 +72,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }));
 
     navigate(response.role === 0 ? "/aluno/menu" : "/professor/menu");
+  }catch (err){
+    setError("E-mail ou senha incorretos.");
+    throw err;
+  }
+    
   }
 
   async function register(data : RegisterRequest){
@@ -91,7 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, error }}>
       {children}
     </AuthContext.Provider>
   );
