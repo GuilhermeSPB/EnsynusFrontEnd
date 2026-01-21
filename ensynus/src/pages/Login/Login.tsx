@@ -10,11 +10,11 @@ import Link from "../../components/link/link"
 import logo from "../../img/logo.jpg"
 import '../../styles/global.css'
 import { useAuth } from "../../contexts/AuthContext"
-
+import { LoadingOverlay } from "../../components/LoadingOverlay/LoadingOverlay"
 
 export default function Login(){
 
-const { login } = useAuth();
+
 
 const [form, setForm] = useState<LoginRequest>({
     email: "",
@@ -22,9 +22,10 @@ const [form, setForm] = useState<LoginRequest>({
     role: -1,
 })
 
+const { login } = useAuth();
 const [showAlert, setShowAlert] = useState(false)
 const [textAlert, setTextAlert] = useState("");
-
+const [loading, setLoading] = useState(false);
 
 function showAlertTemporarily(text: string) {
   setShowAlert(false);
@@ -40,7 +41,7 @@ function validate(): boolean{
 
         if(!form.email.trim()) isValid = false;
         if(!form.senha.trim()) isValid = false;
-
+        if(form.role === -1) isValid = false;
 
         if(!isValid){
             showAlertTemporarily("Campos obrigatórios não preenchidos.")
@@ -54,11 +55,19 @@ function validate(): boolean{
 
 async function handleSubmit(e: React.FormEvent){
     e.preventDefault()
+    if(loading) return;
+
     if(validate()){
         try{
-            await login(form)
+            setLoading(true);
+
+        await Promise.all([await login(form) , new Promise(resolve => setTimeout(resolve, 3000))]);
+            
+        
         } catch(err : any){
             showAlertTemporarily("E-mail ou senha incorretos.")
+        } finally {
+            setLoading(false);
         }
     }
 }
@@ -75,8 +84,9 @@ async function handleSubmit(e: React.FormEvent){
                 icon={TbLockPassword}
                 time={3000}
             />
-            
-            )}
+        )}
+
+        {loading && <LoadingOverlay />}
 
         <form className="container" onSubmit={handleSubmit}>
 
