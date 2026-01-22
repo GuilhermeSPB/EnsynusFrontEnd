@@ -30,7 +30,7 @@ export function WelcomeAnimation({name, items}: WelcomeAnimationProps) {
         ]}
         speed={70}
         wrapper="span"
-        cursor={true}
+        cursor={false}
         repeat={Infinity}
         />
         </div>

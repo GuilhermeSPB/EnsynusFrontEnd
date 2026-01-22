@@ -3,7 +3,7 @@ import AlunoLayout from "../../layouts/AlunoLayout";
 import { useAuth } from "../../contexts/AuthContext";
 import { WelcomeAnimation } from "../../components/WelcomeAnimation/WelcomeAnimation";
 import { alunoSuggestions } from "../../config/navigation/Aluno/aluno.welcomeSet";
-import image from "../../img/menuBackground.jpg"
+import image from "../../img/menuBackgroundAluno.jpg"
 
 export default function MenuAluno(){
     const {user, logout} = useAuth();
