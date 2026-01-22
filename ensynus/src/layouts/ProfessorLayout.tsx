@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/navBar/Navbar"
-import {professorNavbarItems} from "../config/navigation/professor.nav"
+import { professorNavbarItems } from "../config/navigation/Professor/professor.nav";
 
 export default function ProfessorLayout(){
 

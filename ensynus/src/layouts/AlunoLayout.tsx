@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/navBar/Navbar"
-import {alunoNavbarItems} from "../config/navigation/aluno.nav"
+import {alunoNavbarItems} from "../config/navigation/Aluno/aluno.nav"
 
 
 export default function AlunoLayout(){
